@@ -7,6 +7,24 @@ Goal: Build a Windows desktop application (Electron/Flutter/PySide6) to merge mu
 
 # Skill: Binary File Merger with Custom Layout & Header Management
 
+## UI Layout & Customization Strategy
+
+### 1. Structural Control (Layout)
+- **Configuration File:** The app must read an external `layout_config.json` to define component placement.
+- **Customizable Elements:** - Default window dimensions (Width/Height).
+    - Column proportions within each `MergeRow` (e.g., File Path vs. Offset field width).
+    - Visibility toggles for the Progress Bar or Debug Log console.
+
+### 2. Visual Style (Theming)
+- **Configuration File:** Use an external `theme.css` (Electron) or `style.qss` (PySide6).
+- **Customizable Elements:** - Button colors, font sizes, and background transparency.
+    - Highlight colors for the "Conflict Warning" dialog.
+    - Localization: Ensure all UI strings are rendered in **Traditional Chinese**.
+
+### 3. Dynamic UI Behavior
+- **Hot-Reload:** The app should watch for changes in `layout_config.json` or `theme.css` and re-render the UI instantly without a restart.
+- **ScrollArea:** Use a scrollable container to handle an arbitrary number of `MergeRow` instances.
+
 ## Header Specification & Logic
 
 ### 1. Pre-Merge Detection (Magic Number Check)
