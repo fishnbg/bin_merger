@@ -3,7 +3,7 @@ name: binary_merger
 description: merge binary files with AIO/ELAN header support
 ---
 ## Context
-Goal: Build a Windows desktop application (Electron/Flutter/PySide6) to merge multiple target binary files into a base binary file at specified offsets, supporting custom firmware headers.
+Goal: Build a Windows desktop application (Electron/Flutter/PySide6) to merge multiple target binary files into a single merged file at specified offsets, supporting custom firmware headers.
 
 # Skill: Binary File Merger with Custom Layout & Header Management
 
@@ -27,15 +27,7 @@ Goal: Build a Windows desktop application (Electron/Flutter/PySide6) to merge mu
 
 ## Header Specification & Logic
 
-### 1. Pre-Merge Detection (Magic Number Check)
-- **Action:** Before merging, read the first 4 bytes of the **Base File**.
-- **Condition:** If bytes match `0x41 0x49 0x4F 0x48` ("AIOH"):
-    - **Extraction:** Read the `Header Size` at offset `0x0006`.
-    - **Processing:** Extract all data starting from `Header Size` position as the "Clean Base Data".
-    - **Reconstruction:** Discard the old header; a new one will be generated based on the current merge task.
-- **Else:** Treat the entire Base File as raw binary data. And generate a new header based on the current merge task after merged
-
-### 2. All-in-One (AIO) Header (0x20 Bytes)
+### 1. All-in-One (AIO) Header (0x20 Bytes)
 
 - **0x0000 (4B):** Magic Number = `0x41, 0x49, 0x4F, 0x48` ("AIOH")
 - **0x0004 (2B):** Header Version = `0x0001`
@@ -46,8 +38,8 @@ Goal: Build a Windows desktop application (Electron/Flutter/PySide6) to merge mu
 - **0x000E (1B):** FW Count = Total number of merged binary files
 - **0x000F (17B):** Reserved = Fill with `0xFF`
 
-### 3. ELAN Header (0x50 Bytes per target)
-Each merged file (including the Base File) must have a corresponding ELAN header.
+### 2. ELAN Header (0x50 Bytes per target)
+Each merged target file must have a corresponding ELAN header.
 - **0x0000 (2B):** Vendor ID = `0x04F3`
 - **0x0022 (2B):** Product ID = `0x08, 0x56`
 - **0x0024 (2B):** Unique ID = `0xFF, 0xFF`
@@ -56,7 +48,6 @@ Each merged file (including the Base File) must have a corresponding ELAN header
 - **0x002C (4B):** FW Size = Size of the binary file
 - **0x0030 (16B):** CRC = CRC32 of the binary data (Polynomial: `0xEDB88320`). Fill CRC result, then pad remaining 12 bytes with `0x00`.
 - **0x0040 (16B):** Reserved = Fill with `0xFF`
-
 ---
 
 ## UI Layout Strategy
@@ -67,9 +58,11 @@ Each merged file (including the Base File) must have a corresponding ELAN header
 ## Execution Logic
 - **Header Generation:** 
 1. Calculate total header size.
-2. Map all binaries (Base + Targets) to sequential or user-defined offsets.
+2. Map all target binaries to sequential or user-defined offsets.
 3. Generate AIO Header, then all ELAN Headers.
 - **Data Concatenation:** `[AIO Header] + [ELAN Headers] + [Binary Data 1] + [Binary Data 2]...`
+- **Offset Specification:** If the offset field is left empty (`None`), the binary is automatically appended to the end of the previously placed file. If the offset is explicitly set to `0`, it aligns to the immediate end of the header region, overwriting existing data from the start of the writable area.
+- **Overlap Handling:** If user-defined offsets cause binaries to overlap, a warning dialog (`QMessageBox`) must pop up reporting the overlapping files. If the user agrees to continue, the later binary in the list overwrites the earlier binary's data. Data cannot overwrite the header region.
 - **Gap Handling:** Fill unallocated space between offsets with `0x00`.
 
 ## Agent Instructions
