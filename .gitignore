@@ -1,0 +1,30 @@
+# PyInstaller build and distribution folders
+build/
+dist/
+*.spec
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# User-specific config or logs (if generated dynamically, adjust as needed)
+*.log
+
+# AI tools context
+.agent/
+.gemini/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+
+# Executables and large binary files (Exclude main bins, but allow test_data if needed)
+*.exe
+*.dll
+*.so
+*.dylib
+# Ignore all .bin files...
+*.bin
+# ...but explicitly track small test binaries if they are in test_data
+# !test_data/*.bin

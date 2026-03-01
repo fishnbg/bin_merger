@@ -1,0 +1,16 @@
+{
+    "window": {
+        "width": 800,
+        "height": 600,
+        "title": "二進制文件合併工具 (Binary Merger)"
+    },
+    "merge_row": {
+        "path_ratio": 3,
+        "offset_ratio": 1,
+        "button_ratio": 1
+    },
+    "visibility": {
+        "progress_bar": true,
+        "debug_console": true
+    }
+}

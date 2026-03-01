@@ -1,0 +1,82 @@
+/* Main Window */
+QWidget {
+    background-color: #f0f0f0;
+    font-size: 14px;
+    font-family: "Microsoft JhengHei", "Segoe UI", sans-serif;
+    color: #333333;
+}
+
+/* Titles */
+QLabel#titleLabel {
+    font-size: 20px;
+    font-weight: bold;
+    color: #004b87;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+QPushButton {
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+}
+QPushButton:hover {
+    background-color: #005a9e;
+}
+QPushButton:pressed {
+    background-color: #004b87;
+}
+
+/* Base specific style */
+QPushButton#baseSelectBtn {
+    background-color: #107c10;
+}
+QPushButton#baseSelectBtn:hover {
+    background-color: #0b5a0b;
+}
+
+/* Delete Button */
+QPushButton#deleteBtn {
+    background-color: #d13438;
+}
+QPushButton#deleteBtn:hover {
+    background-color: #a4262c;
+}
+
+/* Input Fields */
+QLineEdit {
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    padding: 4px;
+    background-color: #ffffff;
+}
+
+QLineEdit:focus {
+    border: 1px solid #0078d7;
+}
+
+/* Scroll Area */
+QScrollArea {
+    border: 1px solid #dcdcdc;
+    background-color: #ffffff;
+}
+
+/* Progress Bar */
+QProgressBar {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    text-align: center;
+}
+QProgressBar::chunk {
+    background-color: #0078d7;
+}
+
+/* Debug Console */
+QTextEdit {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: "Consolas", monospace;
+    font-size: 12px;
+}
